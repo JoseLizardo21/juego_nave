@@ -11,6 +11,7 @@ const nave = {
     x: 250,
     y: 250,
     ang: 0,
+    disparar: false,
 }
 const mouse = {
     x: 0,
@@ -30,6 +31,19 @@ class Meteroritos{
         this.direccion = direccion;
     }
 }
+class balas{
+    constructor(x,y,ang){
+        this.xIni = x;
+        this.yIni = y;
+        this.x = x;
+        this.y = y;
+        this.bala_ang = ang;
+        this.acel = 1;
+        this.velx = x; 
+        this.vely = y; 
+    }
+}
+const arr_balas = [];
 const arr_meteo = [];
 setInterval(()=>{
     const x_al = ()=>{
@@ -68,8 +82,12 @@ function iniciar(){
     imagen.src = nave.img;
     canvas = element.getContext("2d");
     imagen.addEventListener("load",dibujar)
+    window.addEventListener('click', disparar);
     onkeydown = onkeyup = (e)=> leerEntradas(e);
     loop();
+}
+function disparar(){
+    nave.disparar = true;
 }
 function detecPosMouse(e){
     mouse.x = e.clientX;
@@ -77,6 +95,21 @@ function detecPosMouse(e){
 }
 function leerEntradas(e){
     map[e.key] = e.type == 'keydown';
+}
+function disparo(){
+    if(nave.disparar){
+        arr_balas.push(new balas(nave.x+nave.ancho/2, nave.y+nave.alto/2, nave.ang));
+        nave.disparar = false;
+    }
+    
+    for (const bala of arr_balas) {
+        canvas.fillRect(bala.x, bala.y, 10, 10);
+        bala.velx += 20
+        bala.vely += 20
+        bala.x = ((bala.velx - bala.xIni) * Math.sin(bala.bala_ang+Math.PI/2)) + bala.xIni;
+        bala.y = (( bala.yIni - bala.vely) * Math.cos(bala.bala_ang+Math.PI/2)) + bala.yIni;
+        canvas.fillStyle = 'red';
+    }
 }
 function dibujar(){
     canvas.clearRect(0,0,500,500);
@@ -107,6 +140,7 @@ function mover_nave(){
 function loop(){
     dibujar();
     mover_nave();
+    disparo();
    requestAnimationFrame(loop);
 }
 window.addEventListener("load", iniciar);
