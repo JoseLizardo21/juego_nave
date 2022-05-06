@@ -1,4 +1,4 @@
-let container, canvas, imagen;
+let container, canvas, imagen, container_puntos, container_vida;
 const caja_canvas = {
     x:0,
     y:0,
@@ -16,6 +16,10 @@ const nave = {
 const mouse = {
     x: 0,
     y: 0,
+}
+const datos_juego = {
+    puntos: 0,
+    vidas: 5,
 }
 class Meteroritos{
     constructor(x, y,ancho, alto, vx, vy, acel, direccion){
@@ -37,6 +41,8 @@ class balas{
         this.yIni = y;
         this.x = x;
         this.y = y;
+        this.ancho = 10,
+        this.alto = 10,
         this.bala_ang = ang;
         this.acel = 1;
         this.velx = x; 
@@ -75,6 +81,8 @@ function dib_mete(){
 function iniciar(){
     container = document.getElementById("container");
     container.addEventListener('mousemove', detecPosMouse);
+    container_puntos = document.getElementById('puntos');
+    container_vida = document.getElementById('vidas');
     const element = document.getElementById('canvas');
     caja_canvas.x = element.offsetLeft;
     caja_canvas.y = element.offsetTop;
@@ -103,7 +111,7 @@ function disparo(){
     }
     
     for (const bala of arr_balas) {
-        canvas.fillRect(bala.x, bala.y, 10, 10);
+        canvas.fillRect(bala.x, bala.y, bala.ancho, bala.alto);
         bala.velx += 20
         bala.vely += 20
         bala.x = ((bala.velx - bala.xIni) * Math.sin(bala.bala_ang+Math.PI/2)) + bala.xIni;
@@ -137,10 +145,56 @@ function mover_nave(){
         nave.x -= 4;
     }
 }
+function colicion_bala(){
+    for (const meteoro of arr_meteo) {
+        for (const bala of arr_balas) {
+            if(
+               (bala.x > meteoro.x && bala.x + bala.ancho < meteoro.x + meteoro.ancho) &&
+               (bala.y > meteoro.y && bala.y + bala.alto < meteoro.y + meteoro.alto)
+            ){
+                datos_juego.puntos += 1;
+                meteoro.x = -20;
+                meteoro.y = -20;
+                container_puntos.innerHTML = datos_juego.puntos + " puntos";
+            }
+        }
+
+    }
+}
+function colicion_meteoro(){
+    for (const meteoro of arr_meteo) {
+        if(
+            (
+            (nave.x < meteoro.x && nave.x + nave.ancho > meteoro.x)||
+            (nave.x < meteoro.x + meteoro.ancho && nave.x + nave.ancho > meteoro.x + meteoro.ancho)
+            )&&
+            ( 
+            (nave.y < meteoro.y && nave.y + nave.alto > meteoro.y)||
+            (nave.y < meteoro.y + meteoro.alto && nave.y + nave.alto > meteoro.y + meteoro.alto)
+            )
+
+        ){
+                datos_juego.vidas -= 1;
+                meteoro.x = -20;
+                meteoro.y = -20;
+                nave.x = 250;
+                nave.y = 250;
+                container_vida.innerHTML = datos_juego.vidas + ' vidas';
+                if(datos_juego.vidas == 0){
+                    if(confirm("GAME OVER - ¿DESEAS CONTINUAR?")){
+                       datos_juego.vidas = 5;
+                       datos_juego.puntos = 0; 
+                    } 
+                }
+        }
+    }
+}
 function loop(){
     dibujar();
     mover_nave();
     disparo();
+    colicion_bala();
+    colicion_meteoro()
    requestAnimationFrame(loop);
 }
 window.addEventListener("load", iniciar);

@@ -3,6 +3,7 @@
     padding: 0;
 }
 #container{
+    user-select: none;
     background-color: rgb(22, 44, 51);
     height: 100vh;
     display: flex;
@@ -17,9 +18,20 @@
     color: blanchedalmond;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 50px;
+    user-select: none;
+}
+.titulo2{
+    margin-top: 20px;
+    text-align: center;
+    font-size: 30px;
 }
 #as_pand{
+    background-image: url('./imagenes/ast_pand.webp');
+    background-size: 90%;
+    background-position: bottom;
+    background-repeat: no-repeat;
     width: 400px;
+    height: 500px;
 }
 #estadisticas{
     height: 500px;

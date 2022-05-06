@@ -8,18 +8,28 @@
     <title>Juego Nave</title>
 </head>
 <body>
-    <h1 id="titulo">Juego HTML</h1>
+    <h1 id="titulo">JUEGO NAVES</h1>
     <div id="container">
-        <img id="as_pand" src="./imagenes/ast_pand.webp">
+        <div id="as_pand">
+        </div>
         <canvas id="canvas" width="500px" height="500pxd">
         </canvas>
         <div id="estadisticas">
-            <p style="text-align: center; font-size: 50px;">Indicaciones</p>
-            <br>
-            <br>
-            <br>
-            <p style="margin-left: 10px;">Hola saludos debes de permancer el mayor tiempo sin ninguna baja
-                y tienes que superarte en puntos</p>
+            <p style="text-align: center; font-size: 50px;">INDICACIONES</p>
+            <p style="margin-left: 10px; margin-top: 50px ">
+                Debes de permancer el mayor tiempo sin ninguna baja
+                y tienes que superarte en puntos.
+            </p>
+            <div>
+                <p class="titulo2">
+                    VIDAS
+                </p>
+                <p id="vidas" style="text-align: center">5 vidas</p>
+                <p class="titulo2" style="margin-top: 60px;">
+                    PUNTOS ACUMULADOS
+                </p>
+                <p id="puntos" style="text-align: center">0</p>
+            </div>
         </div>
     </div>
     <script src="index.js"></script>
