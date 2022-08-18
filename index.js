@@ -1,4 +1,6 @@
-let container, canvas, imagen, container_puntos, container_vida;
+let container, canvas, imagen, 
+    container_puntos, container_vida, 
+    control, animation,gameOver,btn_gameOver, flag = 0;
 const caja_canvas = {
     x:0,
     y:0,
@@ -56,7 +58,7 @@ setInterval(()=>{
         let num = Math.random()*1000;
         return num;
     }
-    arr_meteo.push(new Meteroritos(x_al(),-50,50,50,10,0,0.1,1));
+    arr_meteo.push(new Meteroritos(x_al(),-50,50,50,10,0,0.01,1));
     arr_meteo.push(new Meteroritos(x_al(),600,50,50,10,0,0.1,2));
 },3000);
 
@@ -79,6 +81,8 @@ function dib_mete(){
     }
 }
 function iniciar(){
+    control = document.getElementById('pause-start');
+    control.addEventListener('click', pauseStart);
     container = document.getElementById("container");
     container.addEventListener('mousemove', detecPosMouse);
     container_puntos = document.getElementById('puntos');
@@ -121,6 +125,7 @@ function disparo(){
 }
 function dibujar(){
     canvas.clearRect(0,0,500,500);
+    container_vida.innerHTML = datos_juego.vidas + " vidas"
     dib_mete();
     canvas.save();
     const xMedio = (nave.x+nave.ancho+nave.x)/2;
@@ -153,8 +158,8 @@ function colicion_bala(){
                (bala.y > meteoro.y && bala.y + bala.alto < meteoro.y + meteoro.alto)
             ){
                 datos_juego.puntos += 1;
-                meteoro.x = -20;
-                meteoro.y = -20;
+                meteoro.x = -50;
+                meteoro.y = -50;
                 container_puntos.innerHTML = datos_juego.puntos + " puntos";
             }
         }
@@ -180,12 +185,6 @@ function colicion_meteoro(){
                 nave.x = 250;
                 nave.y = 250;
                 container_vida.innerHTML = datos_juego.vidas + ' vidas';
-                if(datos_juego.vidas == 0){
-                    if(confirm("GAME OVER - ¿DESEAS CONTINUAR?")){
-                       datos_juego.vidas = 5;
-                       datos_juego.puntos = 0; 
-                    } 
-                }
         }
     }
 }
@@ -195,6 +194,35 @@ function loop(){
     disparo();
     colicion_bala();
     colicion_meteoro()
-   requestAnimationFrame(loop);
+    animation = requestAnimationFrame(loop);
+    evalLife();
+}
+function evalLife(){
+    if(datos_juego.vidas == 0){
+        datos_juego.vidas = 5;
+        datos_juego.puntos = 0; 
+        arr_meteo.forEach(e =>{
+            e.x = -1000;
+            e.y = -50;
+        });
+        cancelAnimationFrame(animation);
+        gameOver = document.getElementById('gameOver');
+        gameOver.style.visibility = "visible";
+        btn_gameOver = document.getElementById('gameOver');
+        btn_gameOver.addEventListener('click', continuar);
+    }
+}
+function pauseStart(){
+    if(flag==0){
+        cancelAnimationFrame(animation);
+        flag = 1;
+    }else{
+        requestAnimationFrame(loop);
+        flag = 0;
+    }
+}
+function continuar(){
+    requestAnimationFrame(loop)
+    gameOver.style.visibility = 'hidden'
 }
 window.addEventListener("load", iniciar);
