@@ -12,24 +12,32 @@
     <div id="container">
         <div id="as_pand">
         </div>
-        <canvas id="canvas" width="500px" height="500pxd">
+        <canvas id="canvas" width="500px" height="500px">
         </canvas>
         <div id="estadisticas">
-            <p style="text-align: center; font-size: 50px;">INDICACIONES</p>
-            <p style="margin-left: 10px; margin-top: 50px ">
+            <p style="text-align: center; font-size: 30px; margin-top: 10px;">INDICACIONES</p>
+            <p style="margin-left: 20px; margin-right: 20px; margin-top: 30px ">
                 Debes de permancer el mayor tiempo sin ninguna baja
-                y tienes que superarte en puntos.
+                superandote en puntos.
+                <br> <br>
+                - Se te sará 5 vidas
+                <br>
+                - Cada vez que coliciones con un meteoríto se te disminuirá una vida
+                <br>
+                - Una vez tengas cero vidas se reiniciarán los puntos y las vidas.
+                <br>
+                - El mejor puntaje se estará almacenado.
             </p>
             <div>
                 <p class="titulo2">
                     VIDAS
                 </p>
                 <p id="vidas" style="text-align: center">5 vidas</p>
-                <p class="titulo2" style="margin-top: 60px;">
+                <p class="titulo2" style="margin-top: 20px;">
                     PUNTOS ACUMULADOS
                 </p>
                 <p id="puntos" style="text-align: center">0</p>
-                <p id="pause-start">pausa</p>
+                <img id="pause-start" src="imagenes/pause.png" style="width: 50px; margin: 20px auto; display: block;" alt="pause">
             </div>
         </div>
         <div id="gameOver">

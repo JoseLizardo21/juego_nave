@@ -125,7 +125,7 @@ function disparo(){
 }
 function dibujar(){
     canvas.clearRect(0,0,500,500);
-    container_vida.innerHTML = datos_juego.vidas + " vidas"
+    dibujar_corazones(datos_juego.vidas);
     dib_mete();
     canvas.save();
     const xMedio = (nave.x+nave.ancho+nave.x)/2;
@@ -138,15 +138,27 @@ function dibujar(){
 }
 function mover_nave(){
     if(map.w){
+        if(nave.y<=0){
+            return;
+        }
         nave.y -= 4;
     }
     if(map.s){
+        if(nave.y>=400){
+            return;
+        }
         nave.y += 4;
     }
     if(map.d){
+        if(nave.x > 400){
+            return;
+        }
         nave.x += 4;
     }
     if(map.a){
+        if(nave.x<=0){
+            return;
+        }
         nave.x -= 4;
     }
 }
@@ -198,7 +210,7 @@ function loop(){
     evalLife();
 }
 function evalLife(){
-    if(datos_juego.vidas == 0){
+    if(datos_juego.vidas <= 0){
         datos_juego.vidas = 5;
         datos_juego.puntos = 0; 
         arr_meteo.forEach(e =>{
@@ -215,14 +227,56 @@ function evalLife(){
 function pauseStart(){
     if(flag==0){
         cancelAnimationFrame(animation);
+        control.src = "imagenes/cont.png"
         flag = 1;
     }else{
         requestAnimationFrame(loop);
+        control.src = "imagenes/pause.png"
         flag = 0;
     }
 }
 function continuar(){
     requestAnimationFrame(loop)
     gameOver.style.visibility = 'hidden'
+}
+function dibujar_corazones(num_co){
+    switch (num_co) {
+        case 1:
+            container_vida.innerHTML = `<img src="imagenes/corazon.webp" class="corazones">`; 
+            break;
+        case 2: 
+        container_vida.innerHTML = `
+            <img src="imagenes/corazon.webp" class="corazones">
+            <img src="imagenes/corazon.webp" class="corazones">
+            `; 
+            break;
+        case 3: 
+            container_vida.innerHTML = `
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                `; 
+            break;
+        case 4: 
+            container_vida.innerHTML = `
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                `; 
+            break;    
+        case 5: 
+            container_vida.innerHTML = `
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                <img src="imagenes/corazon.webp" class="corazones">
+                `; 
+            break;     
+        default:
+            container_vida.innerHTML = "";
+            break;
+    }
 }
 window.addEventListener("load", iniciar);

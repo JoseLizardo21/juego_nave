@@ -22,8 +22,9 @@
 }
 .titulo2{
     margin-top: 20px;
+    margin-bottom: 10px;
     text-align: center;
-    font-size: 30px;
+    font-size: 20px;
 }
 #as_pand{
     background-image: url('./imagenes/ast_pand.webp');
@@ -64,4 +65,7 @@
 }
 #gameOver > button{
     padding: 10px;
+}
+.corazones{
+    width: 20px;
 }
